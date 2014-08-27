@@ -110,7 +110,8 @@ module ActionController
           return unless cache_configured?
           options = actions.extract_options!
           options[:layout] = true unless options.key?(:layout)
-          filter_options = options.extract!(:if, :unless).merge(only: actions)
+          filter_options = options.extract!(:if, :unless)
+          filter_options.merge!(only: actions) if actions.present?
           cache_options  = options.extract!(:layout, :cache_path).merge(store_options: options)
 
           around_filter ActionCacheFilter.new(cache_options), filter_options
